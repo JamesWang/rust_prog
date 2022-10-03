@@ -1,12 +1,11 @@
 mod mandelbrot;
 mod rhttp;
-use std::env;
-
-/*use actix_web::{App, HttpServer};
 
 #[actix_web::main]
-async fn main() -> std::io::Result<()> {
+async fn ax_web() -> std::io::Result<()> {
+    use actix_web::{App, HttpServer};
     use rhttp::rhttp;
+
     HttpServer::new(|| {
         App::new()
             .service(rhttp::get_index)
@@ -17,11 +16,12 @@ async fn main() -> std::io::Result<()> {
     .run()
     .await
 }
-*/
-use mandelbrot::images as mimage;
-use mandelbrot::mandelbrot as md;
 
-fn main() {
+fn mandelbrot_image() {
+    use mandelbrot::images as mimage;
+    use mandelbrot::mandelbrot as md;
+    use std::env;
+
     let args: Vec<String> = env::args().collect();
     if args.len() != 5 {
         eprintln!("Usage: {} FILE PIXELS UPPERLEFT LOWERRIGHT", args[0]);
@@ -37,4 +37,7 @@ fn main() {
     let mut pixels = vec![0; bounds.0 * bounds.1];
     md::render(&mut pixels, bounds, upper_left, lower_right);
     mimage::write_image(&args[1], &pixels, bounds).expect("error writing PNG file");
+}
+fn main() {
+    mandelbrot_image();
 }
