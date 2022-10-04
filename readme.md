@@ -28,3 +28,12 @@
   - \*   *m, dereference m, yielding the value it refers to
 
   numbers own the vector, when numbers goes out of scope, Rust will automatically free it
+
+- When get error:
+  
+       error: cannot find derive macro `Deserialize` in this scope
+
+  This means something missing in Cargo.toml for serde, should enable derive feature on serde:
+
+       i. e
+       serde = { version = "1.0", features = ["derive"] }

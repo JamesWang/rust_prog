@@ -1,3 +1,5 @@
+use num::Complex;
+
 mod mandelbrot;
 mod rhttp;
 
@@ -35,7 +37,7 @@ fn mandelbrot_image() {
     let upper_left = md::parse_complex(&args[3]).expect("error parsing upper left corner point");
     let lower_right = md::parse_complex(&args[4]).expect("error parsing lower right corner point");
     let mut pixels = vec![0; bounds.0 * bounds.1];
-    md::render(&mut pixels, bounds, upper_left, lower_right);
+    md::quicker_render(&mut pixels, bounds, upper_left, lower_right);
     mimage::write_image(&args[1], &pixels, bounds).expect("error writing PNG file");
 }
 fn main() {

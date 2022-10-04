@@ -55,7 +55,7 @@ fn test_parse_complex() {
     assert_eq!(parse_complex(",-0.0625"), None);
 }
 
-fn pixel_to_point(
+pub(crate) fn pixel_to_point(
     bounds: (usize, usize),
     pixel: (usize, usize),
     upper_left: Complex<f64>,
@@ -101,5 +101,32 @@ pub(crate) fn render(
                 Some(count) => 255 - count as u8,
             };
         }
+    }
+}
+
+pub fn quicker_render(
+    pixels: &mut [u8],
+    bounds: (usize, usize),
+    upper_left: Complex<f64>,
+    lower_right: Complex<f64>,
+) {
+    let threads = 4;
+    let rows_per_band = bounds.1 / threads + 1;
+    {
+        let bands: Vec<&mut [u8]> = pixels.chunks_mut(rows_per_band * bounds.0).collect();
+        crossbeam::scope(|spawner| {
+            for (i, band) in bands.into_iter().enumerate() {
+                let top = rows_per_band * i;
+                let height = band.len() / bounds.0;
+                let band_bounds = (bounds.0, height);
+                let band_upper_left = pixel_to_point(bounds, (0, top), upper_left, lower_right);
+                let band_lower_right =
+                    pixel_to_point(bounds, (bounds.0, top + height), upper_left, lower_right);
+                spawner.spawn(move |_| {
+                    render(band, band_bounds, band_upper_left, band_lower_right);
+                });
+            }
+        })
+        .unwrap();
     }
 }
