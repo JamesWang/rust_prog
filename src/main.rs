@@ -6,7 +6,7 @@ mod rhttp;
 #[actix_web::main]
 async fn ax_web() -> std::io::Result<()> {
     use actix_web::{App, HttpServer};
-    use rhttp::rhttp;
+    use rhttp::rhttp_impl as rhttp;
 
     HttpServer::new(|| {
         App::new()
@@ -21,7 +21,7 @@ async fn ax_web() -> std::io::Result<()> {
 
 fn mandelbrot_image() {
     use mandelbrot::images as mimage;
-    use mandelbrot::mandelbrot as md;
+    use mandelbrot::mandelbrot_impl as md;
     use std::env;
 
     let args: Vec<String> = env::args().collect();
@@ -40,6 +40,13 @@ fn mandelbrot_image() {
     md::quicker_render(&mut pixels, bounds, upper_left, lower_right);
     mimage::write_image(&args[1], &pixels, bounds).expect("error writing PNG file");
 }
-fn main() {
+fn main1() {
     mandelbrot_image();
+}
+
+fn main() {
+    let my_list = ["One", "Two", "Three"];
+    for n in &my_list {
+        println!("{}", n);
+    }
 }

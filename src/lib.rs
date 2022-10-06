@@ -15,16 +15,13 @@ mod tests {
     }
 }
 
-
 pub fn gcd(mut n: u64, mut m: u64) -> u64 {
-    assert!( n != 0 && m != 0);
+    assert!(n != 0 && m != 0);
     while m != 0 {
         if m < n {
-            let t = m;
-            m = n;
-            n = t;
+            std::mem::swap(&mut m, &mut n)
         }
-        m = m % n;
+        m %= n;
     }
     n
 }
@@ -35,7 +32,7 @@ pub fn gcd_runner() {
         numbers.push(u64::from_str(&arg).expect("error parsing argument"))
     }
 
-    if numbers.len() == 0 {
+    if numbers.is_empty() {
         eprint!("Usage: gcd Number ...");
         std::process::exit(1);
     }

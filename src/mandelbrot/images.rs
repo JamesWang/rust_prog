@@ -10,7 +10,7 @@ pub(crate) fn write_image(
     let output = File::create(filename)?;
     let encoder = PngEncoder::new(output);
     encoder
-        .write_image(&pixel, bounds.0 as u32, bounds.1 as u32, ColorType::L8)
+        .write_image(pixel, bounds.0 as u32, bounds.1 as u32, ColorType::L8)
         .expect("TODO: panic message");
     Ok(())
 }
