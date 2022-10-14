@@ -1,7 +1,13 @@
+#![warn(clippy::all, clippy::pedantic)]
+
 use num::Complex;
+use crate::algo::algos::max_diff;
+use crate::refs::show::sort_works;
 
 mod mandelbrot;
 mod rhttp;
+mod refs;
+mod algo;
 
 #[actix_web::main]
 async fn ax_web() -> std::io::Result<()> {
@@ -13,10 +19,10 @@ async fn ax_web() -> std::io::Result<()> {
             .service(rhttp::get_index)
             .service(rhttp::post_gcd)
     })
-    .bind("127.0.0.1:3000")
-    .expect("Bind ")
-    .run()
-    .await
+        .bind("127.0.0.1:3000")
+        .expect("Bind ")
+        .run()
+        .await
 }
 
 fn mandelbrot_image() {
@@ -40,13 +46,47 @@ fn mandelbrot_image() {
     md::quicker_render(&mut pixels, bounds, upper_left, lower_right);
     mimage::write_image(&args[1], &pixels, bounds).expect("error writing PNG file");
 }
+
 fn main1() {
     mandelbrot_image();
 }
 
-fn main() {
+fn main2() {
     let my_list = ["One", "Two", "Three"];
     for n in &my_list {
         println!("{}", n);
     }
+}
+
+fn main3() {
+    let mut v = Vec::new();
+    for i in 101..106 {
+        v.push(i.to_string())
+    }
+    let third = &v[2]; // cannot use v[2]; because otherwise Rust has to remember v[2] is uninitialized after this line
+    let fifth = &v[4]; // same here
+}
+
+fn main() {
+    show_table();
+}
+
+fn show_table() {
+    use refs::show::{showing, Table, sort_works, factorial};
+
+    let mut table = Table::new();
+    table.insert(
+        "Gesualdo".to_string(),
+        vec!["many madrigals".to_string(), "Tenebrae Responsoria".to_string()],
+    );
+    table.insert(
+        "Caravaggio".to_string(),
+        vec!["The Musicians".to_string(), "The Calling of St. Matthew".to_string()],
+    );
+    table.insert(
+        "Cellini".to_string(),
+        vec!["Perseus with the head of Medusa".to_string(), "a salt cellar".to_string()],
+    );
+    sort_works(&mut table);
+    showing(&table);
 }
