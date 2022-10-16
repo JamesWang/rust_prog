@@ -12,12 +12,16 @@ pub fn showing(table: &Table) {
 }
 
 pub fn sort_works(table: &mut Table) {
-    for (_artist, works) in table {
+    for works in table.values_mut() {
         works.sort();
     }
 }
 
 pub fn factorial(n: usize) -> usize {
-    (1..n+1).product()
+    (1..=n).product()
 }
 
+#[test]
+fn test_factorial(){
+    assert_eq!(factorial(5), 120)
+}

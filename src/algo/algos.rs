@@ -1,4 +1,4 @@
-use std::{cmp, ops::Sub};
+use std::ops::Sub;
 
 pub fn max_diff<T: Ord + Sub<Output=T> + Copy>(ints: &[T], min: T) -> T {
     //tail-recursive
@@ -6,7 +6,7 @@ pub fn max_diff<T: Ord + Sub<Output=T> + Copy>(ints: &[T], min: T) -> T {
         if rest.is_empty() {
             return diff;
         }
-        return if rest[0] > *max {
+        if rest[0] > *max {
             if rest.len() > 1 {
                 let m = &rest[0];
                 find_max_diff(m, diff, &rest[1..])
@@ -16,17 +16,17 @@ pub fn max_diff<T: Ord + Sub<Output=T> + Copy>(ints: &[T], min: T) -> T {
         } else {
             find_max_diff(
                 max,
-                cmp::max(diff, max.sub(rest[0])),
+                Ord::max(diff, max.sub(rest[0])),
                 &rest[1..]
             )
-        };
+        }
     }
     if ints.len() <= 1 {
         return min;
     }
     let mut reverse = ints.to_vec();
     reverse.reverse();
-    find_max_diff(&min, reverse[0].clone(), &reverse[1..])
+    find_max_diff(&min, reverse[0], &reverse[1..])
 }
 
 #[test]

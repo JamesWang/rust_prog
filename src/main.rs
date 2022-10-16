@@ -61,7 +61,7 @@ fn main2() {
 fn main3() {
     let mut v = Vec::new();
     for i in 101..106 {
-        v.push(i.to_string())
+        v.push(i.to_string());
     }
     let third = &v[2]; // cannot use v[2]; because otherwise Rust has to remember v[2] is uninitialized after this line
     let fifth = &v[4]; // same here
