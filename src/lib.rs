@@ -177,11 +177,33 @@ fn test_find_extrema() {
     let a = [0, -3, 0, 15, 48];
     let e = find_extrema(&a);
     assert_eq!(*e.least, -3);
-    assert_eq!(*e.greatest, 48);
+    assert_eq!(*e.g
+reatest, 48);
 }
-
 #[derive(Copy, Clone, Debug, PartialEq)]
 struct Point {
     x: f64,
     y: f64
+}
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+enum TimeUnit {
+    Seconds, Minutes, Hours, Days, Months, Years,
+}
+
+impl TimeUnit {
+    fn plural(self) ->&'static str {
+        match self {
+            TimeUnit::Seconds => "seconds",
+            TimeUnit::Minutes => "minutes",
+            TimeUnit::Hours   => "hours",
+            TimeUnit::Days    => "days",
+            TimeUnit::Months  => "months",
+            TimeUnit::Years   => "years",
+        }
+    }
+
+    fn singular(self) -> &'static str {
+        self.plural().trim_end_matches('s')
+    }
 }

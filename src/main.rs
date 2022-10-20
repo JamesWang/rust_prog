@@ -8,6 +8,7 @@ mod mandelbrot;
 mod rhttp;
 mod refs;
 mod algo;
+mod args;
 
 #[actix_web::main]
 async fn ax_web() -> std::io::Result<()> {
@@ -68,7 +69,9 @@ fn main3() {
 }
 
 fn main() {
-    show_table();
+    use args::args_ex::args_main;
+    //show_table();
+    args_main();
 }
 
 fn show_table() {
