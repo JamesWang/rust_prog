@@ -177,8 +177,7 @@ fn test_find_extrema() {
     let a = [0, -3, 0, 15, 48];
     let e = find_extrema(&a);
     assert_eq!(*e.least, -3);
-    assert_eq!(*e.g
-reatest, 48);
+    assert_eq!(*e.greatest, 48);
 }
 #[derive(Copy, Clone, Debug, PartialEq)]
 struct Point {

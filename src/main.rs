@@ -9,6 +9,9 @@ mod rhttp;
 mod refs;
 mod algo;
 mod args;
+mod macros;
+mod examples;
+mod to_do;
 
 #[actix_web::main]
 async fn ax_web() -> std::io::Result<()> {
@@ -68,10 +71,22 @@ fn main3() {
     let fifth = &v[4]; // same here
 }
 
+fn check_to_do() {
+    use to_do::ItemTypes;
+    use to_do::to_do_factory;
+
+    let to_do_item: Result<ItemTypes, &'static str> = to_do_factory("pending", "make");
+    match to_do_item.unwrap() {
+        ItemTypes::Pending(item) => println!("it's a pending item with the title: {}", item.super_struct.title),
+        ItemTypes::Done(item)      => println!("it's a done item with the title: {}", item.super_struct.title)
+    }
+}
 fn main() {
-    use args::args_ex::args_main;
+    //use args::args_ex::args_main;
     //show_table();
-    args_main();
+    //args_main();
+
+    check_to_do();
 }
 
 fn show_table() {

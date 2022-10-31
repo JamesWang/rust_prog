@@ -37,3 +37,10 @@
 
        i. e
        serde = { version = "1.0", features = ["derive"] }
+
+- Run test using cargo with output:
+
+      cargo test -- --nocapture
+      or
+      cargo test -- --show-output
+
