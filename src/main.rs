@@ -12,6 +12,7 @@ mod args;
 mod macros;
 mod examples;
 mod to_do;
+mod actix_hw;
 
 #[actix_web::main]
 async fn ax_web() -> std::io::Result<()> {
@@ -81,12 +82,15 @@ fn check_to_do() {
         ItemTypes::Done(item)      => println!("it's a done item with the title: {}", item.super_struct.title)
     }
 }
-fn main() {
+#[actix_web::main]
+async fn main() {
     //use args::args_ex::args_main;
     //show_table();
     //args_main();
 
-    check_to_do();
+    //check_to_do();
+    use actix_hw::basic_hw;
+    basic_hw::echo_server().await.expect("TODO: panic message");
 }
 
 fn show_table() {
