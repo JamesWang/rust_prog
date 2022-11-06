@@ -3,6 +3,7 @@
 use num::Complex;
 use crate::algo::algos::max_diff;
 use crate::refs::show::sort_works;
+use crate::to_do::structs::traits::create::Create;
 
 mod mandelbrot;
 mod rhttp;
@@ -13,6 +14,7 @@ mod macros;
 mod examples;
 mod to_do;
 mod actix_hw;
+mod state;
 
 #[actix_web::main]
 async fn ax_web() -> std::io::Result<()> {
@@ -75,10 +77,11 @@ fn main3() {
 fn check_to_do() {
     use to_do::ItemTypes;
     use to_do::to_do_factory;
+    use to_do::structs::traits::create::Create;
 
-    let to_do_item: Result<ItemTypes, &'static str> = to_do_factory("pending", "make");
+    let to_do_item: Result<ItemTypes, &'static str> = to_do_factory("pending", "washing");
     match to_do_item.unwrap() {
-        ItemTypes::Pending(item) => println!("it's a pending item with the title: {}", item.super_struct.title),
+        ItemTypes::Pending(item) => item.create(&item.super_struct.title),
         ItemTypes::Done(item)      => println!("it's a done item with the title: {}", item.super_struct.title)
     }
 }
@@ -89,8 +92,10 @@ async fn main() {
     //args_main();
 
     //check_to_do();
-    use actix_hw::basic_hw;
-    basic_hw::echo_server().await.expect("TODO: panic message");
+    //use actix_hw::basic_hw;
+    //basic_hw::echo_server().await.expect("TODO: panic message");
+    use state::run_it;
+    run_it()
 }
 
 fn show_table() {
