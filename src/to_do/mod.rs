@@ -1,4 +1,5 @@
 pub mod structs;
+pub mod processes;
 
 use structs::done::Done;
 use structs::pending::Pending;

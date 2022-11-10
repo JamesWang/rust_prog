@@ -15,6 +15,8 @@ mod examples;
 mod to_do;
 mod actix_hw;
 mod state;
+mod threads;
+
 
 #[actix_web::main]
 async fn ax_web() -> std::io::Result<()> {
@@ -91,11 +93,15 @@ async fn main() {
     //show_table();
     //args_main();
 
-    //check_to_do();
+    check_to_do();
     //use actix_hw::basic_hw;
+    //basic_hw::echo_server().await
     //basic_hw::echo_server().await.expect("TODO: panic message");
-    use state::run_it;
-    run_it()
+    //basic_hw::start_it().await
+    //use state::run_it;
+    //run_it()
+    //threads::threads::run_threads2();
+    //threads::asyncs::async_run2().await;
 }
 
 fn show_table() {
