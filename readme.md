@@ -44,3 +44,10 @@
       or
       cargo test -- --show-output
 
+- Monomorphization 
+      
+      Is the process of turning generic code into specific code by filling in the concrete
+      types that are used when compiled.
+      Rust compiles generic code into code that specifies the type in each instance,
+      no runtime cost for using generics.
+

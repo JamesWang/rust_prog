@@ -2,6 +2,7 @@
 
 use num::Complex;
 use crate::algo::algos::max_diff;
+use crate::examples::example::{Point, tweet_test};
 use crate::refs::show::sort_works;
 use crate::to_do::structs::traits::create::Create;
 
@@ -82,10 +83,10 @@ fn check_to_do() {
     use to_do::structs::traits::create::Create;
 
     let to_do_item: Result<ItemTypes, &'static str> = to_do_factory("pending", "washing");
-    match to_do_item.unwrap() {
-        ItemTypes::Pending(item) => item.create(&item.super_struct.title),
+    /*match to_do_item.unwrap() {
+        ItemTypes::Pending(item) => item.create(&item.super_struct.title, "".to_string, ),
         ItemTypes::Done(item)      => println!("it's a done item with the title: {}", item.super_struct.title)
-    }
+    }*/
 }
 #[actix_web::main]
 async fn main() {
@@ -93,7 +94,7 @@ async fn main() {
     //show_table();
     //args_main();
 
-    check_to_do();
+    //check_to_do();
     //use actix_hw::basic_hw;
     //basic_hw::echo_server().await
     //basic_hw::echo_server().await.expect("TODO: panic message");
@@ -102,8 +103,21 @@ async fn main() {
     //run_it()
     //threads::threads::run_threads2();
     //threads::asyncs::async_run2().await;
+    /*{
+        use examples::example::Point;
+        let p = Point {x: 5, y: 10};
+        println!("p.x={}", p.x());
+        let p2 = Point { x: 3.0, y: 4.0};
+        println!("p.distance={}", p2.distance_from_origin())
+    }*/
+    tweet_test();
 }
 
+impl Point<f32> {
+    fn distance_from_origin(&self) -> f32 {
+        (self.x.powi(2) + self.y.powi(2)).sqrt()
+    }
+}
 fn show_table() {
     use refs::show::{showing, Table, sort_works, factorial};
 
