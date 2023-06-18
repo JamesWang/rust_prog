@@ -51,3 +51,11 @@
       Rust compiles generic code into code that specifies the type in each instance,
       no runtime cost for using generics.
 
+
+## About Fn/FnMut/FnOnce and Variance/Covariance/Contravariance
+
+- Fn is sub-trait of FnMut, then FnMut is sub-trait of FnOnce
+- Closure will be compiled to implement one or more of them during compiling
+- An api high order function which accepts FnOnce, you can pass FnMut or Fn to it, 
+  this follows parameters are **covariance**
+- All closures implement **FnOnce**
