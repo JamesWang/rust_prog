@@ -110,7 +110,7 @@ async fn main() {
         let p2 = Point { x: 3.0, y: 4.0};
         println!("p.distance={}", p2.distance_from_origin())
     }*/
-    tweet_test();
+    //tweet_test();
 }
 
 impl Point<f32> {
