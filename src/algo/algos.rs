@@ -1,5 +1,8 @@
-use std::ops::Sub;
+use std::collections::HashMap;
+use std::iter::Enumerate;
+use std::ops::{Index, Sub};
 use num::Num;
+use serde::de::Unexpected::Map;
 
 pub fn max_diff<T: PartialOrd + Sub<Output=T> + Copy>(ints: &[T], min: T) -> T {
     //tail-recursive
@@ -98,4 +101,24 @@ pub fn max_diff_info<T: PartialOrd + Sub<Output=T> + Copy>(ints: &[T], min: T) -
 
 fn max_diff2<T: PartialOrd + Sub<Output=T> + Copy>(ints: &[T], min: T) -> T {
     return max_diff_info(ints, min).0
+}
+
+fn two_int_sum_in_array(nums: &[i32], target: i32) -> Vec<usize> {
+    let mut id_map: HashMap<i32,usize> = HashMap::new();
+
+    for (idx, num) in nums.iter().enumerate() {
+        let diff = target - nums[idx];
+        if id_map.get(&diff).is_some() {
+            return vec![*id_map.get(&diff).unwrap(), idx];
+        }
+        id_map.insert(*num, idx);
+    }
+    return vec![0; 0];
+}
+
+#[test]
+fn test_sum_in_array_with_target(){
+    let arr: Vec<i32> = vec![0, 1, 2, 7, 11, 15];
+    let result = two_int_sum_in_array(&arr, 9);
+    assert_eq!(result, vec![2,3])
 }
