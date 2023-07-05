@@ -1,6 +1,9 @@
 use std::collections::HashMap;
+use std::collections::linked_list::LinkedList;
 use std::iter::Enumerate;
 use std::ops::{Index, Sub};
+use std::vec;
+use std::cmp;
 use num::Num;
 use serde::de::Unexpected::Map;
 
@@ -68,6 +71,7 @@ mod find_tests {
         );
     }
 }
+
 type Pair<T> = (T, T);
 
 pub fn max_diff_info<T: PartialOrd + Sub<Output=T> + Copy>(ints: &[T], min: T) -> (T, Pair<T>) {
@@ -87,7 +91,7 @@ pub fn max_diff_info<T: PartialOrd + Sub<Output=T> + Copy>(ints: &[T], min: T) -
                 max,
                 c_diff,
                 &rest[1..],
-                (rest[0], *max)
+                (rest[0], *max),
             )
         }
     }
@@ -100,11 +104,11 @@ pub fn max_diff_info<T: PartialOrd + Sub<Output=T> + Copy>(ints: &[T], min: T) -
 }
 
 fn max_diff2<T: PartialOrd + Sub<Output=T> + Copy>(ints: &[T], min: T) -> T {
-    return max_diff_info(ints, min).0
+    return max_diff_info(ints, min).0;
 }
 
 fn two_int_sum_in_array(nums: &[i32], target: i32) -> Vec<usize> {
-    let mut id_map: HashMap<i32,usize> = HashMap::new();
+    let mut id_map: HashMap<i32, usize> = HashMap::new();
 
     for (idx, num) in nums.iter().enumerate() {
         let diff = target - nums[idx];
@@ -117,8 +121,40 @@ fn two_int_sum_in_array(nums: &[i32], target: i32) -> Vec<usize> {
 }
 
 #[test]
-fn test_sum_in_array_with_target(){
+fn test_sum_in_array_with_target() {
     let arr: Vec<i32> = vec![0, 1, 2, 7, 11, 15];
     let result = two_int_sum_in_array(&arr, 9);
-    assert_eq!(result, vec![2,3])
+    assert_eq!(result, vec![2, 3])
+}
+
+fn add_two_linked_lists(mut list1: Vec<i32>, mut list2: Vec<i32>) -> Vec<i32> {
+    let mut up = 0;
+    let mut new_list: Vec<i32> = Vec::new();
+    let mut longer: usize = cmp::max(list1.len(), list2.len());
+    while longer > 0 {
+        longer -= 1;
+        let v1 = if list1.is_empty() {0} else {list1.remove(list1.len()-1)};
+        let v2 = if list2.is_empty() {0} else {list2.remove(list2.len()-1)};
+        let sum = v1 + v2 + up;
+        if sum >= 10 {
+            up = 1;
+            new_list.push(sum - 10);
+        } else {
+            up = 0;
+            new_list.push(sum);
+        }
+    }
+    new_list
+}
+
+#[test]
+fn add_two_ll_test() {
+    let mut l1= vec![2,4,3];
+
+    let mut l2= vec![5,6,4];
+
+
+    let result_list = add_two_linked_lists(l1,l2);
+    let mut exp = vec![7,0,8];
+    assert_eq!(result_list, exp);
 }
