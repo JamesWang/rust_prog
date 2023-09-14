@@ -31,3 +31,28 @@ pub fn run_threads2() {
     println!("time elapsed {:?}", now.elapsed());
     println!("result {}", r1.unwrap() + r2.unwrap() + r3.unwrap());
 }
+
+pub fn sub_threads() {
+    let start = time::Instant::now();
+
+    let handler_1 = thread::spawn(||{
+        let pause = time::Duration::from_millis(300);
+        thread::sleep(pause.clone());
+    });
+    let handler_2 = thread::spawn(||{
+        let pause = time::Duration::from_millis(300);
+        thread::sleep(pause.clone());
+    });
+
+    handler_1.join().unwrap();
+    handler_2.join().unwrap();
+
+    let finish = time::Instant::now();
+    println!("----- {:?}", finish.duration_since(start));
+}
+
+#[test]
+fn test_sub_threads() {
+    sub_threads();
+}
+
