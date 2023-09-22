@@ -72,7 +72,7 @@ fn convert(operations: &Vec<Operation>) -> Vec<Command> {
     );
     path_data.push(start_at_home);
     //for op in operations {
-    let op1 = operations.iter().map(|op| {
+    let mut op1: Vec<Command> = operations.iter().map(|op| {
         match *op {
             Forward(distance) => turtle.forward(distance),
             TurnLeft => turtle.turn_left(),
@@ -89,7 +89,7 @@ fn convert(operations: &Vec<Operation>) -> Vec<Command> {
         turtle.wrap();
         path_segment
     }).collect();
-    path_data.append(op1);
+    path_data.append(&mut op1);
     path_data
 }
 

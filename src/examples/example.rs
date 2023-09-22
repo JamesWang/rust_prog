@@ -1,3 +1,4 @@
+use std::borrow::Cow;
 use std::iter::Sum;
 
 fn ex1() {
@@ -78,4 +79,35 @@ pub fn tweet_test() {
 //trait bound
 pub fn notify<T: Summary>(item: T) {
     println!("Breaking news! {}", item.summarize())
+}
+
+
+fn remove_spaces(input: &str) -> Cow<str> {
+    if input.contains(' ') {
+        let mut buf = String::with_capacity(input.len());
+        for c in input.chars() {
+            if c != ' ' {
+                buf.push(c);
+            }
+        }
+        return Cow::Owned(buf);
+    }
+    return Cow::Borrowed(input);
+}
+
+fn remove_spaces2(input: &str) -> Cow<str> {
+    if input.contains(' ') {
+        input.chars()
+            .filter(|&x| x != ' ')
+            .collect::<std::string::String>()
+            .into()
+    } else {
+        input.into()
+    }
+}
+
+#[test]
+fn test_remove_spaces() {
+    let s = remove_spaces("Herman Radtke");
+    println!("Length of string is {}", s.len());
 }

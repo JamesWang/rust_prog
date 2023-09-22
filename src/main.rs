@@ -17,6 +17,8 @@ mod to_do;
 mod actix_hw;
 mod state;
 mod threads;
+mod grep;
+mod json;
 
 
 #[actix_web::main]
