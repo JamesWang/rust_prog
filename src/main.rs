@@ -19,6 +19,7 @@ mod state;
 mod threads;
 mod grep;
 mod json;
+mod heap_graph;
 
 
 #[actix_web::main]
@@ -90,8 +91,8 @@ fn check_to_do() {
         ItemTypes::Done(item)      => println!("it's a done item with the title: {}", item.super_struct.title)
     }*/
 }
-#[actix_web::main]
-async fn main() {
+//#[actix_web::main]
+fn main() {
     //use args::args_ex::args_main;
     //show_table();
     //args_main();
@@ -113,6 +114,8 @@ async fn main() {
         println!("p.distance={}", p2.distance_from_origin())
     }*/
     //tweet_test();
+
+    heap_graph::hgraph::graph_main();
 }
 
 impl Point<f32> {
