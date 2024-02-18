@@ -1,3 +1,5 @@
+pub mod func;
+
 use std::env;
 use std::str::FromStr;
 
