@@ -28,3 +28,34 @@
   - \*   *m, dereference m, yielding the value it refers to
 
   numbers own the vector, when numbers goes out of scope, Rust will automatically free it
+
+- When get error:
+  
+       error: cannot find derive macro `Deserialize` in this scope
+
+  This means something missing in Cargo.toml for serde, should enable derive feature on serde:
+
+       i. e
+       serde = { version = "1.0", features = ["derive"] }
+
+- Run test using cargo with output:
+
+      cargo test -- --nocapture
+      or
+      cargo test -- --show-output
+
+- Monomorphization 
+      
+      Is the process of turning generic code into specific code by filling in the concrete
+      types that are used when compiled.
+      Rust compiles generic code into code that specifies the type in each instance,
+      no runtime cost for using generics.
+
+
+## About Fn/FnMut/FnOnce and Variance/Covariance/Contravariance
+
+- Fn is sub-trait of FnMut, then FnMut is sub-trait of FnOnce
+- Closure will be compiled to implement one or more of them during compiling
+- An api high order function which accepts FnOnce, you can pass FnMut or Fn to it, 
+  this follows parameters are **covariance**
+- All closures implement **FnOnce**
