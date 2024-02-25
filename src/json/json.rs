@@ -1,7 +1,7 @@
 use bincode::serialize as to_bincode;
 use serde_cbor::to_vec as to_cbor;
 use serde_json::to_string as to_json;
-use serde_derive::{Serialize};
+use serde_derive::Serialize;
 
 
 #[derive(Serialize)]

@@ -16,7 +16,7 @@ fn numeral_main() {
     let operations = parse(input);
     let path_data = convert(&operations);
     let document = generate_svg(path_data);
-    svg::save(save_to, &document).unwrap()
+    //svg::save(save_to, &document).unwrap()
 }
 
 #[derive(Debug, Clone, Copy)]
