@@ -2,7 +2,6 @@ use graphics::math::{Vec2d, add, mul_scalar};
 use piston_window::*;
 use rand::prelude::*;
 use std::alloc::{GlobalAlloc, System, Layout};
-use std::ops::Add;
 use std::time::Instant;
 
 struct ReportingAllocator;
