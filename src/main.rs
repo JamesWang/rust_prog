@@ -22,6 +22,7 @@ mod json;
 mod heap_graph;
 mod hexdump;
 mod func;
+mod cpu;
 
 #[actix_web::main]
 async fn ax_web() -> std::io::Result<()> {
@@ -117,8 +118,9 @@ fn main() {
     //tweet_test();
 
     //heap_graph::hgraph::graph_main();
-    hexdump::hex::main_hex();
-    func::f2::call_main();
+    //hexdump::hex::main_hex();
+    //func::f2::call_main();
+    cpu::cpu::cpu_main();
 }
 
 impl Point<f32> {

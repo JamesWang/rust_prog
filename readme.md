@@ -59,3 +59,10 @@
 - An api high order function which accepts FnOnce, you can pass FnMut or Fn to it, 
   this follows parameters are **covariance**
 - All closures implement **FnOnce**
+
+## About CPU
+
+- MMU - Memory Management Unit
+        The MMU's job is to translate the virtual address we use in our program to physical address
+- When the OS starts a process, it sets up a page table for our process and make sure a special register on the CPU points to this page table
+- OS provided a pointer to a function that handles page fault, the CPU jumps to that function when we try to dereference 99999999999999 and thereby hands over control to the operating system.
