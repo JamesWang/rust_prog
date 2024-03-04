@@ -123,6 +123,8 @@ fn main() {
     //func::f2::call_main();
     cpu::cpu::cpu_main();
     sys::sys_call::sys_main();
+    sys::normal_sys_call::syscall("Hello world from normal sys-call".to_string());
+    
 }
 
 impl Point<f32> {
