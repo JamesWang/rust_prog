@@ -89,3 +89,8 @@
 well. Each task is set up with a stack of a fixed size, so you still have to reserve more space than you
 actually use. However, these stacks can be growable, meaning that once the stack is full, the runtime
 can grow the stack.
+### Fibers and Green Threads
+- M:N threading, many tasks can run concurrently on one OS thread
+- Fibers and green threads are often referred to as ***stackful*** coroutines
+- Goroutine is an example of a specific implementation of stackful coroutine. Coroutine usually implies that they're cooperative in nature, but Goroutine can be **pre-exmpted** by the scheduler.
+- Fibers and Green threads use the same mechanisms as OS, setting up a stack for each task, saving CPU's states and swith from one task to another by doing context switch
