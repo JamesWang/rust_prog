@@ -1,5 +1,10 @@
 #![warn(clippy::all, clippy::pedantic)]
 
+use std::time;
+
+use actix_web::cookie::time::convert::Second;
+use async_std::stream::StreamExt;
+use kafka::kafka_sensor::repeat;
 use num::Complex;
 use crate::algo::algos::max_diff;
 use crate::examples::example::{Point, tweet_test};
@@ -24,6 +29,7 @@ mod hexdump;
 mod func;
 mod cpu;
 mod sys;
+mod kafka;
 
 #[actix_web::main]
 async fn ax_web() -> std::io::Result<()> {
@@ -95,7 +101,9 @@ fn check_to_do() {
     }*/
 }
 //#[actix_web::main]
-fn main() {
+
+#[tokio::main]
+async fn main() -> Result<(), reqwest::Error>{
     //use args::args_ex::args_main;
     //show_table();
     //args_main();
@@ -121,10 +129,12 @@ fn main() {
     //heap_graph::hgraph::graph_main();
     //hexdump::hex::main_hex();
     //func::f2::call_main();
-    cpu::cpu::cpu_main();
-    sys::sys_call::sys_main();
-    sys::normal_sys_call::syscall("Hello world from normal sys-call".to_string());
-    
+    //cpu::cpu::cpu_main();
+    //sys::sys_call::sys_main();
+    //sys::normal_sys_call::syscall("Hello world from normal sys-call".to_string());
+    //get_request().await?;
+    repeat().await;
+    Ok(())
 }
 
 impl Point<f32> {
@@ -132,6 +142,7 @@ impl Point<f32> {
         (self.x.powi(2) + self.y.powi(2)).sqrt()
     }
 }
+
 fn show_table() {
     use refs::show::{showing, Table, sort_works, factorial};
 

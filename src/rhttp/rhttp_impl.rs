@@ -1,6 +1,6 @@
 pub(crate) use actix_web::{get, HttpResponse, post, web};
 
-use rust_prog::gcd;
+use num::integer::gcd;
 use serde_derive::Deserialize;
 
 #[derive(Deserialize)]

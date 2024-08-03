@@ -1,3 +1,4 @@
+use rdkafka::client::Client;
 use rdkafka::consumer::{BaseConsumer, Consumer};
 use rdkafka::producer::{BaseProducer, BaseRecord};
 use rdkafka::{ClientConfig, Message};
@@ -12,7 +13,7 @@ pub async fn repeat() {
     let producer = kafka_producer();
     let future = async move {
         println!("subscribing messages...");
-        let consumer = kafka_consumer();
+        let consumer = kafka_consumer2();
         consumer.subscribe(&vec!["my_topic"]).expect("subscribe topic failed");
         println!("subscribed");
        //for msg in consumer.iter() {
@@ -74,12 +75,23 @@ fn kafka_producer() -> BaseProducer {
 }
 
 
+fn kafka_client(f: &dyn Fn(&mut ClientConfig) -> &mut ClientConfig) -> BaseConsumer {
+    f(ClientConfig::new().set("bootstrap.servers", KAFKA_ADVERTISE_LISENERS))
+        .create()
+        .expect("Invalid client config")
+}
+fn kafka_consumer2() -> BaseConsumer {
+    kafka_client(&|ccf: &mut ClientConfig|{
+        ccf.set("group.id", "ubuntu2");
+        ccf
+    })
+}
 fn kafka_consumer() -> BaseConsumer {
     ClientConfig::new()
     .set("bootstrap.servers", KAFKA_ADVERTISE_LISENERS)
     .set("group.id", "ubuntu2")
     .create()
-    .expect("Invalid producer config")
+    .expect("Invalid consumer config")
 }
 
 fn publish_message(json: String, producer: BaseProducer) {
