@@ -4,6 +4,11 @@ macro_rules! comp {
     };
 }
 
+pub fn tap<'a, T>(f: &'a dyn Fn(&mut T) -> &mut T, value: &'a mut T) -> &'a mut T {
+    f(value);
+    value
+}
+
 #[test]
 fn test_add7_multi3_eqs_39() {
     let add7 = |x| x + 7;

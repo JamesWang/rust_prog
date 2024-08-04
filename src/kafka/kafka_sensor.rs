@@ -3,6 +3,7 @@ use rdkafka::consumer::{BaseConsumer, Consumer};
 use rdkafka::producer::{BaseProducer, BaseRecord};
 use rdkafka::{ClientConfig, Message};
 use tokio::time;
+use crate::func::funcs::tap;
 use crate::rhttp::temp_http::Temperature;
 
 const SENSOR_URL: &str = "http://192.168.0.143";
@@ -76,9 +77,9 @@ fn kafka_producer() -> BaseProducer {
 
 
 fn kafka_client(f: &dyn Fn(&mut ClientConfig) -> &mut ClientConfig) -> BaseConsumer {
-    f(ClientConfig::new().set("bootstrap.servers", KAFKA_ADVERTISE_LISENERS))
-        .create()
-        .expect("Invalid client config")
+    tap(f, ClientConfig::new().set("bootstrap.servers", KAFKA_ADVERTISE_LISENERS))
+    .create()
+    .expect("Invalid client config")
 }
 fn kafka_consumer2() -> BaseConsumer {
     kafka_client(&|ccf: &mut ClientConfig|{
