@@ -106,6 +106,41 @@ fn remove_spaces2(input: &str) -> Cow<str> {
     }
 }
 
+pub struct Vector2 {
+    x: f32,
+    y: f32,
+}
+
+impl Vector2 {
+    const ZERO: Vector2 = Vector2{ x: 0.0, y: 0.0};
+    const UNIT: Vector2 = Vector2{ x: 1.0, y: 0.0};
+}
+
+pub fn ex_struct() {
+    //let scaled = Vector2::UNIT.scaled_by(2.0);
+}
+
+//given any specific lifetime 'elt, you can make an Extrama<'elt> that holdsreferences with that lifetime
+struct Extrama<'elt> {
+    greatest: &'elt i32,
+    least: &'elt i32,
+}
+
+fn find_extram<'s>(slice: &'s [i32]) -> Extrama<'s> {
+    let mut greatest = &slice[0];
+    let mut least = &slice[0];
+
+    for i in 1..slice.len() {
+        if slice[i] < *least {
+            least = slice[i];
+        }
+        if slice[i] > *greatest {
+            greatest = slice[i];
+        }
+    }
+    Extrama { greatest, least }
+}
+
 #[test]
 fn test_remove_spaces() {
     let s = remove_spaces("Herman Radtke");

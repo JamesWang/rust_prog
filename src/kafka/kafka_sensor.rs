@@ -69,23 +69,24 @@ async fn get_request(producer: BaseProducer) -> Result<(), reqwest::Error> {
 }
 
 fn kafka_producer() -> BaseProducer {
-    ClientConfig::new()
-    .set("bootstrap.servers", KAFKA_ADVERTISE_LISENERS)
+    kafka_client(&|ccf: ClientConfig| ccf)
     .create()
     .expect("Invalid producer config")
 }
 
-
-fn kafka_client(f: &dyn Fn(&mut ClientConfig) -> &mut ClientConfig) -> BaseConsumer {
-    tap(f, ClientConfig::new().set("bootstrap.servers", KAFKA_ADVERTISE_LISENERS))
-    .create()
-    .expect("Invalid client config")
+fn kafka_client(f: &dyn Fn(ClientConfig) -> ClientConfig) -> ClientConfig {
+    let mut config = ClientConfig::new();
+    config.set("bootstrap.servers", KAFKA_ADVERTISE_LISENERS);
+    
+    f(config)
 }
+
 fn kafka_consumer2() -> BaseConsumer {
-    kafka_client(&|ccf: &mut ClientConfig|{
+    kafka_client(&|mut ccf: ClientConfig|{
         ccf.set("group.id", "ubuntu2");
         ccf
-    })
+    }).create().expect("Invalid consumer config")
+
 }
 fn kafka_consumer() -> BaseConsumer {
     ClientConfig::new()
@@ -97,16 +98,14 @@ fn kafka_consumer() -> BaseConsumer {
 
 fn publish_message(json: String, producer: BaseProducer) {
     println!("publishing sensor data....");
-    let record: BaseRecord<'_, (), std::string::String> = 
-        BaseRecord::to("my_topic")
-            .payload(&json);
+    let record: BaseRecord<'_, (), String> = BaseRecord::to("my_topic").payload(&json);
     producer.send(record).expect("failed to send message")
 }
 
 fn publish_temperature(temp_data: Temperature, producer: BaseProducer) {
     println!("publishing sensor data....");
     let binding = serde_json::to_string_pretty(&temp_data).expect("convert to Json failed");
-    let record: BaseRecord<'_, (), std::string::String> = 
+    let record: BaseRecord<'_, (), String> = 
         BaseRecord::to("my_topic")
             .payload(&binding);
     producer.send(record).expect("failed to send message")
