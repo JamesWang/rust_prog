@@ -1,10 +1,9 @@
-use rdkafka::client::Client;
+use crate::rhttp::temp_http::Temperature;
 use rdkafka::consumer::{BaseConsumer, Consumer};
 use rdkafka::producer::{BaseProducer, BaseRecord};
 use rdkafka::{ClientConfig, Message};
+use serde::Serialize;
 use tokio::time;
-use crate::func::funcs::tap;
-use crate::rhttp::temp_http::Temperature;
 
 const SENSOR_URL: &str = "http://192.168.0.143";
 const KAFKA_ADVERTISE_LISENERS: &str = "192.168.0.28:9092";
@@ -15,85 +14,93 @@ pub async fn repeat() {
     let future = async move {
         println!("subscribing messages...");
         let consumer = kafka_consumer2();
-        consumer.subscribe(&vec!["my_topic"]).expect("subscribe topic failed");
-        println!("subscribed");
-       //for msg in consumer.iter() {
         consumer
-        .iter()
-        .filter_map(|result| match result {
-            Ok(_) => {
-                println!("message received.");
-                result.ok()
-            },
-            Err(err) => {
-                eprintln!("error consuming from message stream: {}", err);
-                None
-            },
-        })        
-        .for_each(|msg|{
-            println!("receiving messages....");
-            println!(
-                "key: '{:?}', 
+            .subscribe(&vec!["my_topic"])
+            .expect("subscribe topic failed");
+        println!("subscribed");
+        //for msg in consumer.iter() {
+        consumer
+            .iter()
+            .filter_map(|result| match result {
+                Ok(_) => {
+                    println!("message received.");
+                    result.ok()
+                }
+                Err(err) => {
+                    eprintln!("error consuming from message stream: {}", err);
+                    None
+                }
+            })
+            .for_each(|msg| {
+                println!("receiving messages....");
+                println!(
+                    "key: '{:?}', 
                 payload: '{}', 
                 topic: {}, 
                 partition: {}, 
                 offset: {}, 
                 timestamp: {:?}",
-                msg.key(), msg.payload_view::<str>().unwrap().unwrap(), msg.topic(), msg.partition(), msg.offset(), msg.timestamp()
-            );
-        });
+                    msg.key(),
+                    msg.payload_view::<str>().unwrap().unwrap(),
+                    msg.topic(),
+                    msg.partition(),
+                    msg.offset(),
+                    msg.timestamp()
+                );
+            });
     };
-    tokio::spawn(future);    
+    tokio::spawn(future);
 
     loop {
         timer.tick().await;
         let producer = producer.clone();
         tokio::spawn(async move {
-            let _ = get_request(producer).await;
+            let _ = get_request(producer, "my-topic").await;
         });
     }
 }
 
-async fn get_request(producer: BaseProducer) -> Result<(), reqwest::Error> {
+async fn get_request(producer: BaseProducer, topic: &str) -> Result<(), reqwest::Error> {
     let response = reqwest::get(SENSOR_URL).await?; //ESP-52F261
     println!("Status: {}", response.status());
 
     let body = response.text().await?;
     println!("Body:\n{}", body);
     let temp: Temperature = serde_json::from_str(&body).unwrap();
-    
+
     //publish_message(body, producer);
-    publish_temperature(temp,producer);
+    publish(temp, producer, topic);
     println!("published message to kafka");
     Ok(())
 }
 
 fn kafka_producer() -> BaseProducer {
     kafka_client(&|ccf: ClientConfig| ccf)
-    .create()
-    .expect("Invalid producer config")
+        .create()
+        .expect("Invalid producer config")
 }
 
 fn kafka_client(f: &dyn Fn(ClientConfig) -> ClientConfig) -> ClientConfig {
     let mut config = ClientConfig::new();
     config.set("bootstrap.servers", KAFKA_ADVERTISE_LISENERS);
-    
+
     f(config)
 }
 
 fn kafka_consumer2() -> BaseConsumer {
-    kafka_client(&|mut ccf: ClientConfig|{
+    kafka_client(&|mut ccf: ClientConfig| {
         ccf.set("group.id", "ubuntu2");
         ccf
-    }).create().expect("Invalid consumer config")
-
+    })
+    .create()
+    .expect("Invalid consumer config")
 }
 fn kafka_consumer() -> BaseConsumer {
     ClientConfig::new()
-    .set("bootstrap.servers", KAFKA_ADVERTISE_LISENERS)
-    .set("group.id", "ubuntu2")
-    .create()
-    .expect("Invalid consumer config")
+        .set("bootstrap.servers", KAFKA_ADVERTISE_LISENERS)
+        .set("group.id", "ubuntu2")
+        .create()
+        .expect("Invalid consumer config")
 }
 
 fn publish_message(json: String, producer: BaseProducer) {
@@ -102,11 +109,9 @@ fn publish_message(json: String, producer: BaseProducer) {
     producer.send(record).expect("failed to send message")
 }
 
-fn publish_temperature(temp_data: Temperature, producer: BaseProducer) {
+fn publish<T: Serialize>(data: T, producer: BaseProducer, topic: &str){
     println!("publishing sensor data....");
-    let binding = serde_json::to_string_pretty(&temp_data).expect("convert to Json failed");
-    let record: BaseRecord<'_, (), String> = 
-        BaseRecord::to("my_topic")
-            .payload(&binding);
+    let binding = serde_json::to_string_pretty(&data).expect("convert to Json failed");
+    let record: BaseRecord<'_, (), String> = BaseRecord::to(topic).payload(&binding);
     producer.send(record).expect("failed to send message")
 }
