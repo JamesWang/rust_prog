@@ -29,3 +29,4 @@ reqwest = {version = "0.11.22", features = ["json"]}
 tokio ={ version = "1.15", features = ["full"]}
 rdkafka = { version = "0.25", features = ["cmake-build"] }
 gstreamer-rtsp = "0.23.0"
+time = "0.3.36"

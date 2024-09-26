@@ -6,6 +6,8 @@ use serde::Serialize;
 use tokio::time;
 
 const SENSOR_URL: &str = "http://192.168.0.143";
+
+//jooly-ubuntu docker
 const KAFKA_ADVERTISE_LISENERS: &str = "192.168.0.28:9092";
 
 pub async fn repeat() {
@@ -34,12 +36,12 @@ pub async fn repeat() {
             .for_each(|msg| {
                 println!("receiving messages....");
                 println!(
-                    "key: '{:?}', 
-                payload: '{}', 
-                topic: {}, 
-                partition: {}, 
-                offset: {}, 
-                timestamp: {:?}",
+                   "key: '{:?}', 
+                    payload: '{}', 
+                    topic: {}, 
+                    partition: {}, 
+                    offset: {}, 
+                    timestamp: {:?}",
                     msg.key(),
                     msg.payload_view::<str>().unwrap().unwrap(),
                     msg.topic(),

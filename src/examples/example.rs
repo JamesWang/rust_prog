@@ -132,10 +132,10 @@ fn find_extram<'s>(slice: &'s [i32]) -> Extrama<'s> {
 
     for i in 1..slice.len() {
         if slice[i] < *least {
-            least = slice[i];
+            least = &slice[i];
         }
         if slice[i] > *greatest {
-            greatest = slice[i];
+            greatest = &slice[i];
         }
     }
     Extrama { greatest, least }
