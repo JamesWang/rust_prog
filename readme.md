@@ -97,3 +97,6 @@ can grow the stack.
 
 - Suspending a **corountine** means stopping it in the middle, when they are suspended, they return a **Continuation**; A thread cannot be saved, only blocked.
 - A **corountine** is much more powerful, when suspended, it **does not consume any resources**, and it **can be resumed on a different thread**, a **continuation** can be **serialized, deserialized and then resumed**
+
+## Request data from sensor API and write received Json data to Kafka
+[Access to a sensor's data using **reqwest** and publish requested data to Kafka using **rdkafka**](https://github.com/JamesWang/rust_prog/blob/develop/src/kafka/kafka_sensor.rs)
