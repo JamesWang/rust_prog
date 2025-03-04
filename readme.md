@@ -97,3 +97,23 @@ can grow the stack.
 
 - Suspending a **corountine** means stopping it in the middle, when they are suspended, they return a **Continuation**; A thread cannot be saved, only blocked.
 - A **corountine** is much more powerful, when suspended, it **does not consume any resources**, and it **can be resumed on a different thread**, a **continuation** can be **serialized, deserialized and then resumed**
+
+## Core Data
+- Using strings
+  
+  **Most of the time, when working in Rust, you’re going to be working with either a String or &str but never a str.**
+
+  - It’s not possible to create a str directly; you can only borrow a reference to one.
+  - The &str type serves as a convenient lowest common denominator.
+    - you can always borrow a String as &str
+    ![alt text](image.png)
+
+- Slices and arrays
+
+  **Slices and arrays are special types in Rust, they represent a sequence of arbitrary values of the same type**
+  - A slice is a sequence of values with an arbitrary length
+  - An array is a fixed-length sequence of values
+  ```
+  let array = [0u8; 64];
+  let slice: &[u8] = &array; // this borrows a slice of the array
+  ```
