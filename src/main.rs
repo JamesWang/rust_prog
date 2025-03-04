@@ -30,6 +30,7 @@ mod func;
 mod cpu;
 mod sys;
 mod kafka;
+mod core_data;
 
 #[actix_web::main]
 async fn ax_web() -> std::io::Result<()> {
@@ -133,7 +134,8 @@ async fn main() -> Result<(), reqwest::Error>{
     //sys::sys_call::sys_main();
     //sys::normal_sys_call::syscall("Hello world from normal sys-call".to_string());
     //get_request().await?;
-    repeat().await;
+    //repeat().await;
+    core_data::str_example1::run_string_str();
     Ok(())
 }
 

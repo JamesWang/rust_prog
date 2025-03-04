@@ -6,7 +6,7 @@ use std::time::Instant;
 
 struct ReportingAllocator;
 
-#[global_allocator]
+//#[global_allocator]
 static ALLOCATOR: ReportingAllocator = ReportingAllocator;
 
 unsafe impl GlobalAlloc for ReportingAllocator {

@@ -17,7 +17,7 @@ pub async fn repeat() {
         println!("subscribing messages...");
         let consumer = kafka_consumer2();
         consumer
-            .subscribe(&vec!["my_topic"])
+            .subscribe(&vec!["my-topic"])
             .expect("subscribe topic failed");
         println!("subscribed");
         //for msg in consumer.iter() {
@@ -67,7 +67,7 @@ async fn get_request(producer: BaseProducer, topic: &str) -> Result<(), reqwest:
     println!("Status: {}", response.status());
 
     let body = response.text().await?;
-    println!("Body:\n{}", body);
+    //println!("Body:\n{}", body);
     let temp: Temperature = serde_json::from_str(&body).unwrap();
 
     //publish_message(body, producer);

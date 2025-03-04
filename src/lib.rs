@@ -1,5 +1,6 @@
 pub mod func;
 mod rhttp;
+pub mod core_data;
 
 use std::env;
 use std::str::FromStr;
