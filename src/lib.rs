@@ -1,7 +1,7 @@
 pub mod func;
 mod rhttp;
 pub mod core_data;
-
+pub mod decimal;
 use std::env;
 use std::str::FromStr;
 
