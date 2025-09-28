@@ -1,4 +1,5 @@
 #![warn(clippy::all, clippy::pedantic)]
+#![feature(naked_functions)]
 
 use std::time;
 
@@ -31,6 +32,8 @@ mod cpu;
 mod sys;
 mod kafka;
 mod core_data;
+mod asyncs;
+
 
 #[actix_web::main]
 async fn ax_web() -> std::io::Result<()> {
