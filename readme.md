@@ -57,7 +57,7 @@
 - Fn is sub-trait of FnMut, then FnMut is sub-trait of FnOnce
 - Closure will be compiled to implement one or more of them during compiling
 - An api high order function which accepts FnOnce, you can pass FnMut or Fn to it, 
-  this follows parameters are **covariance**
+  this follows parameters are **contravariance**
 - All closures implement **FnOnce**
 
 ## About CPU
